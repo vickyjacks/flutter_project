@@ -7,11 +7,13 @@ class LoginPage extends StatefulWidget {
 }
 
 class _LoginPageState extends State<LoginPage> {
-  final _formkey = GlobalKey<FormState>();
   String name = "";
   bool changeButton = false;
-  moveToHome() async {
-    if (_formkey.currentState!.validate()) {
+
+  final _formKey = GlobalKey<FormState>();
+
+  moveToHome(BuildContext context) async {
+    if (_formKey.currentState!.validate()) {
       setState(() {
         changeButton = true;
       });
@@ -29,15 +31,12 @@ class _LoginPageState extends State<LoginPage> {
         color: Colors.white,
         child: SingleChildScrollView(
           child: Form(
-            key: _formkey,
+            key: _formKey,
             child: Column(
               children: [
-                Container(
-                  height: MediaQuery.of(context).size.height * 0.3,
-                  child: Image.asset(
-                    "assets/login.png",
-                    fit: BoxFit.cover,
-                  ),
+                Image.asset(
+                  "assets/images/hey.png",
+                  fit: BoxFit.cover,
                 ),
                 SizedBox(
                   height: 20.0,
@@ -64,8 +63,9 @@ class _LoginPageState extends State<LoginPage> {
                         ),
                         validator: (value) {
                           if (value!.isEmpty) {
-                            return "please enter username";
+                            return "Username cannot be empty";
                           }
+
                           return null;
                         },
                         onChanged: (value) {
@@ -81,27 +81,23 @@ class _LoginPageState extends State<LoginPage> {
                         ),
                         validator: (value) {
                           if (value!.isEmpty) {
-                            return "please enter password";
+                            return "Password cannot be empty";
                           } else if (value.length < 6) {
-                            return "password is incoreect";
-                          } else {
-                            return null;
+                            return "Password length should be atleast 6";
                           }
-                        },
-                        onChanged: (value) {
-                          name = value;
-                          setState(() {});
+
+                          return null;
                         },
                       ),
                       SizedBox(
                         height: 40.0,
                       ),
-
                       Material(
+                        color: Colors.deepPurple,
+                        borderRadius:
+                            BorderRadius.circular(changeButton ? 50 : 8),
                         child: InkWell(
-                          onTap: () async {
-                            moveToHome();
-                          },
+                          onTap: () => moveToHome(context),
                           child: AnimatedContainer(
                             duration: Duration(seconds: 1),
                             width: changeButton ? 50 : 150,
@@ -119,22 +115,9 @@ class _LoginPageState extends State<LoginPage> {
                                         fontWeight: FontWeight.bold,
                                         fontSize: 18),
                                   ),
-                            decoration: BoxDecoration(
-                              color: Colors.deepPurple,
-                              borderRadius:
-                                  BorderRadius.circular(changeButton ? 50 : 8),
-                            ),
                           ),
                         ),
                       ),
-
-                      // ElevatedButton(
-                      //   child: Text("Login"),
-                      //   style: TextButton.styleFrom(minimumSize: Size(150, 40)),
-                      //   onPressed: () {
-                      //     Navigator.pushNamed(context, MyRoutes.homeRoute);
-                      //   },
-                      // )
                     ],
                   ),
                 )
